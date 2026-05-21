@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery — EduCore School of Excellence</title>
+  <meta name="description" content="Browse photos from EduCore's events, campus life, sports, cultural programs, and student activities.">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EduCore">
+    <meta name="apple-mobile-web-app-title" content="EduCore"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .gallery-filter-bar {
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .gfbtn {
+      padding: .45rem 1.1rem;
+      border-radius: var(--radius-full);
+      font-size: .82rem;
+      font-weight: 600;
+      border: 1.5px solid var(--border);
+      background: var(--bg2);
+      color: var(--text2);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .gfbtn:hover, .gfbtn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+    .masonry-gallery {
+      columns: 4;
+      column-gap: 1rem;
+    }
+    .masonry-item {
+      break-inside: avoid;
+      margin-bottom: 1rem;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+    .masonry-item:hover .gallery-overlay { opacity: 1; }
+    .masonry-item:hover .gal-placeholder { transform: scale(1.04); }
+    .gal-placeholder {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      transition: transform var(--transition);
+    }
+    .gal-emoji { font-size: 3rem; }
+    .gal-lbl { font-size: .72rem; font-weight: 600; font-family: 'IBM Plex Mono', monospace; color: rgba(255,255,255,0.7); text-align: center; padding: 0 .5rem; }
+
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.92);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox-inner {
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+    }
+    .lightbox-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 6rem;
+      margin-bottom: 1rem;
+    }
+    .lightbox-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: .4rem; }
+    .lightbox-sub { font-size: .85rem; color: rgba(255,255,255,.5); }
+    .lightbox-close {
+      position: absolute;
+      top: 1.5rem; right: 1.5rem;
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.2);
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    @media (max-width: 900px) { .masonry-gallery { columns: 3; } }
+    @media (max-width: 600px) { .masonry-gallery { columns: 2; } }
+    @media (max-width: 380px) { .masonry-gallery { columns: 1; } }
+  </style>
+  <script>(function(){var t=localStorage.getItem('educore-theme');if(t)document.documentElement.setAttribute('data-theme',t);else if(window.matchMedia('(prefers-color-scheme:dark)').matches)document.documentElement.setAttribute('data-theme','dark');})();</script>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="page-hero-content">
+      <div class="breadcrumb">
+        <a href="../index.html">Home</a><span class="breadcrumb-sep">›</span><span>Gallery</span>
+      </div>
+      <h1 class="page-hero-title">Photo Gallery</h1>
+      <p class="page-hero-sub">Moments of joy, learning, achievement, and friendship captured across EduCore's vibrant campus life.</p>
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="gallery-filter-bar aos-item">
+      <button class="gfbtn active" onclick="filterGallery('all',this)">All Photos</button>
+      <button class="gfbtn" onclick="filterGallery('sports',this)">Sports</button>
+      <button class="gfbtn" onclick="filterGallery('cultural',this)">Cultural</button>
+      <button class="gfbtn" onclick="filterGallery('academic',this)">Academic</button>
+      <button class="gfbtn" onclick="filterGallery('campus',this)">Campus Life</button>
+      <button class="gfbtn" onclick="filterGallery('trips',this)">Field Trips</button>
+    </div>
+
+    <div class="masonry-gallery" id="galleryGrid">
+      <!-- Sports -->
+      <div class="masonry-item aos-item" data-cat="sports" onclick="openLightbox('🏆','Annual Sports Day 2025','December 15, 2025 · School Grounds','linear-gradient(135deg,#E8505B,#c0392b)')">
+        <div class="gal-placeholder" style="background:linear-gradient(135deg,#E8505B,#c0392b);height:220px">
+          <span class="gal-emoji">🏆</span>
+          <span class="gal-lbl">Annual Sports Day</span>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-caption">Annual Sports Day 2025</span></div>
+      </div>
+      <div class="masonry-item aos-item" data-delay="40" data-cat="sports" onclick="openLightbox('🏊','Swimming Championships','Inter-School Competition · Oct 2025','linear-gradient(135deg,#2980B9,#1a5276)')">
+        <div class="gal-placeholder" style="background:linear-gradient(135deg,#2980B9,#1a5276);height:160px">
+          <span class="gal-emoji">🏊</span>
+          <span class="gal-lbl">Swimming Championships</span>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-caption">Swimming Championships</span></div>
+      </div>
+      <!-- Cultural -->
+      <div class="masonry-item aos-item" data-delay="80" data-cat="cultural" onclick="openLightbox('🎭','Annual Day — Colours of EduCore','February 20, 2025 · Auditorium','linear-gradient(135deg,#8E44AD,#6C3483)')">
+        <div class="gal-placeholder" style="background:linear-gradient(135deg,#8E44AD,#6C3483);height:190px">
+          <span class="gal-emoji">🎭</span>
+          <span class="gal-lbl">Annual Day Performance</span>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-caption">Annual Day 2025</span></div>
+      </div>
+      <div class="masonry-item aos-item" data-delay="120" data-cat="academic" onclick="openLightbox('🔬','Science Exhibition','Innovation Fair · Jan 2025','linear-gradient(135deg,#16A085,#0E6655)')">
+        <div class="gal-placeholder" style="background:linear-gradient(135deg,#16A085,#0E6655);height:240px">
+          <span class="gal-emoji">🔬</span>
+          <span class="gal-lbl">Science Exhibition 2025</span>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-caption">Science Exhibition</span></div>
+      </div>
+      <div class="masonry-item aos-item" data-delay="0" data-cat="campus" onclick="openLightbox('📚','School Library','20,000 Volume Resource Centre','linear-gradient(135deg,#F39C12,#d68910)')">
+        <div class="gal-placeholder" style="background:linear-gradient(135deg,#F39C12,#d68910);height:180px">
+          <span class="gal-emoji">📚</span>
+          <span class="gal-lbl">School Library</span>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-caption">Library & Resource Centre</span></div>
+      </div>
+      <div class="masonry-item aos-item" data-delay="60" data-cat="sports" onclick="openLightbox('🏏','Cricket Team','State-Level Champions 2025','linear-gradient(135deg,#27AE60,#196F3D)')">
+        <div class="gal-placeholder" style="background:linear-gradient(135deg,#27AE60,#196F3D);height:200px">
+          <span class="gal-emoji">🏏</span>
+          <span class="gal-lbl">Cricket Team — State Champions</span>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-caption">Cricket Team 2025</span></div>
+      </div>
+      <div class="masonry-item aos-item" data-delay="120" data-cat="cultural" onclick="openLightbox('🎵','Music Concert','Annual Music Fest · Dec 2024','linear-gradient(135deg,#E67E22,#CA6F1E)')">
+        <div class="gal-placeholder" style="background:linear-gradient(135deg,#E67E22,#CA6F1E);height:165px">
+          <span class="gal-emoji">🎵</span>
+          <span class="gal-lbl">Annual Music Concert</span>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-caption">Music Fest 2024</span></div>
+      </div>
+      <div class="masonry-item aos-item" data-delay="40" data-cat="trips" onclick="openLightbox('🏕️','Nature Camp','Corbett National Park · Sept 2025','linear-gradient(135deg,#1ABC9C,#148F77)')">
+        <div class="gal-placeholder" style="background:linear-gradient(135deg,#1ABC9C,#148F77);height:210px">
+          <span class="gal-emoji">🏕️</span>
+          <span class="gal-lbl">Nature Camp — Corbett Park</span>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-caption">Nature Camp 2025</span></div>
+      </div>
+      <div class="masonry-item aos-item" data-delay="80" data-cat="academic" onclick="openLightbox('💻','Robotics Lab','AI & Innovation Hub','linear-gradient(135deg,#0A3D62,#1a5276)')">
+        <div class="gal-placeholder" style="background:linear-gradient(135deg,#0A3D62,#1a5276);height:175px">
+          <span class="gal-emoji">💻</span>
+          <span class="gal-lbl">Robotics & AI Lab</span>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-caption">Robotics Lab</span></div>
+      </div>
+      <div class="masonry-item aos-item" data-delay="0" data-cat="cultural" onclick="openLightbox('🎨','Art Exhibition','Fine Arts Showcase · March 2025','linear-gradient(135deg,#EC407A,#AD1457)')">
+        <div class="gal-placeholder" style="background:linear-gradient(135deg,#EC407A,#AD1457);height:220px">
+          <span class="gal-emoji">🎨</span>
+          <span class="gal-lbl">Art Exhibition 2025</span>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-caption">Fine Arts Exhibition</span></div>
+      </div>
+      <div class="masonry-item aos-item" data-delay="60" data-cat="campus" onclick="openLightbox('🌿','Eco Garden','Our Award-Winning Green Campus','linear-gradient(135deg,#4CAF50,#2E7D32)')">
+        <div class="gal-placeholder" style="background:linear-gradient(135deg,#4CAF50,#2E7D32);height:155px">
+          <span class="gal-emoji">🌿</span>
+          <span class="gal-lbl">Eco Garden Campus</span>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-caption">Green Campus</span></div>
+      </div>
+      <div class="masonry-item aos-item" data-delay="120" data-cat="trips" onclick="openLightbox('🏛️','Heritage Walk','Old Delhi History Tour · Aug 2025','linear-gradient(135deg,#795548,#4E342E)')">
+        <div class="gal-placeholder" style="background:linear-gradient(135deg,#795548,#4E342E);height:200px">
+          <span class="gal-emoji">🏛️</span>
+          <span class="gal-lbl">Heritage Field Trip</span>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-caption">Heritage Walk 2025</span></div>
+      </div>
+      <div class="masonry-item aos-item" data-delay="40" data-cat="sports" onclick="openLightbox('⚽','Football Tournament','Inter-House Championship 2025','linear-gradient(135deg,#FF7043,#BF360C)')">
+        <div class="gal-placeholder" style="background:linear-gradient(135deg,#FF7043,#BF360C);height:185px">
+          <span class="gal-emoji">⚽</span>
+          <span class="gal-lbl">Football Tournament</span>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-caption">Football Championship</span></div>
+      </div>
+      <div class="masonry-item aos-item" data-delay="80" data-cat="academic" onclick="openLightbox('🎓','Graduation Day','Class XII Farewell 2025','linear-gradient(135deg,#3F51B5,#1A237E)')">
+        <div class="gal-placeholder" style="background:linear-gradient(135deg,#3F51B5,#1A237E);height:230px">
+          <span class="gal-emoji">🎓</span>
+          <span class="gal-lbl">Class XII Graduation</span>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-caption">Graduation Day 2025</span></div>
+      </div>
+      <div class="masonry-item aos-item" data-delay="0" data-cat="campus" onclick="openLightbox('🍽️','School Cafeteria','FSSAI Certified Dining Hall','linear-gradient(135deg,#00BCD4,#006064)')">
+        <div class="gal-placeholder" style="background:linear-gradient(135deg,#00BCD4,#006064);height:170px">
+          <span class="gal-emoji">🍽️</span>
+          <span class="gal-lbl">School Cafeteria</span>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-caption">Dining Hall</span></div>
+      </div>
+      <div class="masonry-item aos-item" data-delay="60" data-cat="cultural" onclick="openLightbox('🪔','Diwali Celebration','Festival of Lights · Oct 2025','linear-gradient(135deg,#FF8F00,#E65100)')">
+        <div class="gal-placeholder" style="background:linear-gradient(135deg,#FF8F00,#E65100);height:190px">
+          <span class="gal-emoji">🪔</span>
+          <span class="gal-lbl">Diwali Celebration</span>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-caption">Diwali 2025</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <div class="lightbox-inner">
+    <div class="lightbox-img" id="lbImg"></div>
+    <div class="lightbox-title" id="lbTitle"></div>
+    <div class="lightbox-sub" id="lbSub"></div>
+  </div>
+</div>
+
+<div class="cta-banner" style="margin-top:0">
+  <div class="container">
+    <div class="cta-banner-content">
+      <h2>Be Part of Our Story</h2>
+      <p>Every photo here is a memory made at EduCore. Yours could be next.</p>
+      <div class="cta-banner-btns">
+        <a href="../pages/admissions.html" class="btn btn-accent btn-lg">Apply Now</a>
+        <a href="../pages/contact.html" class="btn btn-outline-white btn-lg">Visit Our Campus</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+<script src="../js/nav.js"></script>
+<script src="../js/footer.js"></script>
+<script src="../js/main.js"></script>
+<script>
+  renderNav('gallery.html','../');
+  renderFooter('../');
+
+  function openLightbox(emoji, title, sub, bg) {
+    document.getElementById('lbImg').style.background = bg;
+    document.getElementById('lbImg').textContent = emoji;
+    document.getElementById('lbTitle').textContent = title;
+    document.getElementById('lbSub').textContent = sub;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox(e) {
+    if (!e || e.target === document.getElementById('lightbox') || e.target.classList.contains('lightbox-close')) {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }
+  document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox({target:document.getElementById('lightbox')}); });
+
+  function filterGallery(cat, btn) {
+    document.querySelectorAll('.gfbtn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.masonry-item').forEach(item => {
+      if (cat === 'all' || item.dataset.cat === cat) {
+        item.style.display = '';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+</script>
+</body>
+</html>
