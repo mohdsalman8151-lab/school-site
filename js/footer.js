@@ -82,3 +82,15 @@ function renderFooter(prefix) {
   const el = document.getElementById('footer-placeholder');
   if (el) el.innerHTML = html;
 }
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('./service-worker.js')
+        .then(function(registration) {
+            console.log('ServiceWorker registered');
+        })
+        .catch(function(error) {
+            console.log('ServiceWorker failed:', error);
+        });
+    });
+}
+
