@@ -1,13 +1,12 @@
 const CACHE_NAME = 'educore-cache-v1';
 
 const urlsToCache = [
-    '/',
-    '/index.html',
-    '/assets/css/style.css',
-    '/assets/js/nav.js',
-    '/assets/js/main.js',
-    '/assets/js/footer.js',
-
+    './',
+    './index.html',
+    './css/style.css',
+    './js/nav.js',
+    './js/main.js',
+    './js/footer.js',
 ];
 
 self.addEventListener('install', event => {
