@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "app.netlify.educoreerp.twa",
+        "sha256_cert_fingerprints": ["C6:56:39:D5:E9:EA:C1:D4:23:22:31:E9:F8:05:5C:9F:24:45:BF:61:16:AF:1E:B9:7E:A7:82:5C:F4:C1:8F:1A"]
+      }
+    }]
